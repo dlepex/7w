@@ -27,6 +27,6 @@ removeNonAlphaNumeric(base64(hashFunc(str)))
 ### Implementation notes
 
 
-* CrytoJS is the only dependency (it was minified, and cipher parts were purged to reduce size)
+* CryptoJS is the only dependency (it was minified, and cipher parts were purged to reduce size)
 * Doesn't work in elderly browsers
 * Mobile browsers may have some quirks but do work overall
