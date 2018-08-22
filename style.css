@@ -111,9 +111,14 @@ fieldset {
 	color: red;
 }
 
-.buttons {
+.control-pane {
+	display: inline-block;
 	margin-left: 1em;
 	margin-bottom: 1em;
+}
+
+.control-buttons {
+	display: inherit;
 }
 
 .word {
@@ -131,7 +136,6 @@ fieldset {
 .word>input {
 	width: 1.5em;
 }
-
 
 .word>input:focus {
 	width: 12em;
