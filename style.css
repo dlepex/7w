@@ -145,3 +145,5 @@ fieldset {
 	color: gray;
 	font-size: 70%;
 }
+
+.hidden { display: none !important; }

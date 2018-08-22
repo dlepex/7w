@@ -226,37 +226,28 @@
 	}
 
 	function copyToClipboard(text) {
-		var textArea = document.createElement("textarea");
+		let textArea = document.createElement("textarea");
 		textArea.value = text;
 		document.body.appendChild(textArea);
 		textArea.focus();
 		textArea.select();
 		try {
-			var successful = document.execCommand('copy');
-			var msg = successful ? 'successful' : 'unsuccessful';
-			console.log('copyToClipboard: ' + msg);
+			let ok = document.execCommand('copy');
+			if (!ok) {
+				console.log('copyToClipboard not ok');
+			}
 		} catch (err) {
 			console.error('copyToClipboard-err', err);
 		}
-	
-		document.body.removeChild(textArea);
+		document.body.removeChild(textArea)
 	}
 
-
 	function hide(el) {
-		let d = el.style.display
-		if (d == "none") {
-			return
-		}
-		el._was_display_=d
-		el.style.display = "none"
+		el.classList.add('hidden')
 	}
 
 	function show(el) {
-		if (el.style.display=="none") {
-			el.style.display = el._was_display_ || "inherit"
-			delete el._was_display_
-		}
+		el.classList.remove('hidden')
 	}
 
 })(this.CryptoJS)
