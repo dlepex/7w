@@ -1,0 +1,140 @@
+body {
+  font: 1em/150% sans-serif;
+  padding: 1em;
+  margin: 0 auto;
+	max-width: 36em;
+}
+
+@media (max-width:1000) {
+  body {
+    font-size: 1.5em;
+  }
+}
+
+form {
+	position: relative;
+	border-radius: 7px;
+}
+
+
+.v-form {
+	background-color: white;
+}
+
+.s-form {
+	background-color: linen;
+}
+
+.mode-label {
+	color: darkgoldenrod;
+	font-weight: bold;
+}
+
+legend {
+	color: darkblue;
+}
+
+
+button {
+	text-align: center;
+	outline: none;
+	border:0.2em;
+	border-radius: 1em;
+	background-color: tan;
+	color: darkblue;
+	height: 2.5em;
+	box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 3px 4px 0 rgba(0,0,0,0.19);
+}
+
+.edbtn {
+	height: 2em;
+	box-shadow: none;
+}
+
+button:active {
+  /*box-shadow: 0 5px #666;*/
+	transform: translateY(0.2em);
+}
+
+button:hover {
+	background-color:wheat;
+}
+
+#result {
+	width: 15em
+}
+
+#str {
+	width: 25em
+}
+
+#length {
+	width: 3em;
+	margin-right: 2em;
+}
+
+#sep {
+	width: 4em
+}
+input {
+	font-size: 80%;
+}
+input:invalid {
+	color: red; 
+	border: 0.1em ridge red;
+}
+
+label {
+	color: teal;
+	font-size: 80%;
+	vertical-align: sub;
+	padding-right: 0.2em;
+}
+
+.word-num {
+	color: teal;
+	font-size: 70%;
+	vertical-align: super;
+	padding-right: 0.2em;
+}
+
+fieldset {
+	border-radius: 7px;
+	border:0.1em solid tan;
+	margin-bottom: 1em;
+}
+#err-pane {
+	border:0.1em solid red;
+	color: red;
+}
+#err-pane>legend {
+	color: red;
+}
+.buttons {
+	margin-left: 1em;
+	margin-bottom: 1em;
+}
+.word {
+	display: inline-block;
+	margin-right: 1em;
+}
+#words-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap
+}
+
+.word>input {
+	width: 1.5em;
+}
+
+
+.word>input:focus {
+	width: 12em;
+}
+
+.info {
+	color: gray;
+	font-size: 70%;
+}
