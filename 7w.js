@@ -210,7 +210,7 @@
 		}
 	}
 
-	function replaceNonAlphaNum(s) {
+	function removeNonAlphaNumeric(s) {
 		return s.replace(/[\W_]+/g, '');
 	}
 	function base64(s) {
@@ -222,7 +222,7 @@
 
 
 	function genPassword(str) {
-		return replaceNonAlphaNum(base64(hashFunc(str)))
+		return removeNonAlphaNumeric(base64(hashFunc(str)))
 	}
 
 	function copyToClipboard(text) {

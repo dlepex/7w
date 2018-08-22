@@ -110,14 +110,17 @@ fieldset {
 #err-pane>legend {
 	color: red;
 }
+
 .buttons {
 	margin-left: 1em;
 	margin-bottom: 1em;
 }
+
 .word {
 	display: inline-block;
 	margin-right: 1em;
 }
+
 #words-container {
 	display: flex;
 	flex-direction: row;
