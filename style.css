@@ -17,6 +17,11 @@ form {
 	padding: 1em 0.5em 1em 0.5em
 }
 
+.readme {
+	float: right;
+	font-size: 80%;
+}
+
 p {
 	margin: 0em
 }
@@ -27,6 +32,10 @@ p {
 
 .s-form {
 	background-color: linen;
+}
+
+.readme>a {
+	font-size: 80%
 }
 
 .mode-label {
