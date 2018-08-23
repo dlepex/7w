@@ -1,11 +1,11 @@
 (function (CryptoJS) {
 
-	const wordsCount = 7;
-	let dom;
-	let model;
+	const wordsCount = 7
+	let dom
+	let model
 
 	document.addEventListener("DOMContentLoaded", function () {
-		let _el = document.body; // for the sake of code completion 
+		let _el = document.body // for the sake of code completion 
 		dom = { 
 			sMode: _el,  hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
 			showBtn: _el,  hashedStrSep: _el, result: _el, hashedStr: _el, pwdLength: _el,
@@ -19,21 +19,21 @@
 	
 		document.querySelectorAll('input[name="mode"]').forEach(e => e.onchange = onChangeMode)
 		dom.wordInputs.forEach(e => e.addEventListener('focus', hideOutputs))
-		dom.showBtn.addEventListener("click", onShowPassword);
-		document.querySelector('#clearBtn').addEventListener("click", onClear);
-		document.querySelector('#genBtn').addEventListener("click", onGenerate);
-		document.querySelector('#copyBtn').addEventListener("click", onGenerateAndCopy);
-	});
+		dom.showBtn.addEventListener("click", onShowPassword)
+		document.querySelector('#clearBtn').addEventListener("click", onClear)
+		document.querySelector('#genBtn').addEventListener("click", onGenerate)
+		document.querySelector('#copyBtn').addEventListener("click", onGenerateAndCopy)
+	})
 
 	function onClear() {
 		model = undefined
 		hideOutputs()
-		clearInputs();
+		clearInputs()
 	}
 
 	function hideOutputs() {
 		hide(dom.resultPane)
-		hideErrPane()
+		hide(dom.errPane)
 	}
 
 	function clearInputs() {
@@ -46,9 +46,9 @@
 
 	function onGenerate() {
 		model = {}
-		model.err = checkValidity();
+		model.err = checkValidity()
 		if(!model.err) {
-			readInputs(model);
+			readInputs(model)
 		}
 		showOutput(model)
 	}
@@ -88,9 +88,9 @@
 	}
 
 	function readInputs(model) {
-		let exists;
+		let exists
 		let words = []
-		let sep = dom.hashedStrSep.value || " ";
+		let sep = dom.hashedStrSep.value || " "
 		for (let i = wordsCount - 1; i >= 0; i--) {
 			let el = dom.wordInputs[i]
 			let w = el.value.trim()
@@ -101,16 +101,16 @@
 				exists = true
 				words.push(w)
 			} else if (exists) {
-				model.err = "words cannot have gaps";
-				return;
+				model.err = "words cannot have gaps"
+				return
 			}
 		}
-		if (words.pwdLength < 3) {
+		if (words.length < 3) {
 			model.err = "at least 3 words required"
 			return
 		}
 		let len = 0
-		words.forEach(w => len += w.pwdLength)
+		words.forEach(w => len += w.length)
 		if (len < 10) {
 			model.err = "total words length must be not less than 10"
 			return
@@ -125,19 +125,14 @@
 		if (model.err) {
 			hide(dom.resultPane)
 			show(dom.errPane)
-			dom.err.textContent = model.err;
+			dom.err.textContent = model.err
 			return
 		}
-		hideErrPane()
+		hide(dom.errPane)
 		show(dom.resultPane)
 		dom.hashedStr.value = model.hashedStr
 		model.pwd = genPassword(model.hashedStr).slice(0, dom.pwdLength.value | 0)
 		dom.result.value = model.pwd
-	}
-
-	function hideErrPane() {
-		hide(dom.errPane)
-		dom.err.textContent = ""
 	}
 
 	function onChangeMode() {
@@ -171,42 +166,31 @@
 	function getHashAlg() {
 		let id = document.querySelector('input[name="alg"]:checked').id
 		switch (id) {
-			case 'md5Alg': return CryptoJS.MD5;
-			case 'sha1Alg': return CryptoJS.SHA1;
-			case 'sha256Alg': return CryptoJS.SHA256;
+			case 'md5Alg': return CryptoJS.MD5
+			case 'sha1Alg': return CryptoJS.SHA1
+			case 'sha256Alg': return CryptoJS.SHA256
 		}
 		throw new Error("unknown alg: " + id)
 	}
 
-	function removeNonAlphaNumeric(s) {
-		return s.replace(/[\W_]+/g, '');
-	}
-
-	function base64(s) {
-		return CryptoJS.enc.Base64.stringify(s)
-	}
-
-	function hashFunc(str) {
-		return getHashAlg()(str)
-	}
-
-	function genPassword(str) {
-		return removeNonAlphaNumeric(base64(hashFunc(str)))
-	}
+	function removeNonAlphaNumeric(s) {	return s.replace(/[\W_]+/g, '')	}
+	function base64(s) { return CryptoJS.enc.Base64.stringify(s) }
+	function hashFunc(str) { return getHashAlg()(str) }
+	function genPassword(str) {	return removeNonAlphaNumeric(base64(hashFunc(str)))	}
 
 	function copyToClipboard(text) {
-		let textArea = document.createElement("textarea");
-		textArea.value = text;
-		document.body.appendChild(textArea);
-		textArea.focus();
-		textArea.select();
+		let textArea = document.createElement("textarea")
+		textArea.value = text
+		document.body.appendChild(textArea)
+		textArea.focus()
+		textArea.select()
 		try {
-			let ok = document.execCommand('copy');
+			let ok = document.execCommand('copy')
 			if (!ok) {
-				console.log('copyToClipboard not ok');
+				console.log('copyToClipboard not ok')
 			}
 		} catch (err) {
-			console.error('copyToClipboard-err', err);
+			console.error('copyToClipboard-err', err)
 		}
 		document.body.removeChild(textArea)
 	}
@@ -218,7 +202,7 @@
 		let blueprint = wc.childNodes[1]
 		let list = [blueprint.getElementsByTagName("input")[0]]
 		let generate = (idx) => {
-			let c = blueprint.cloneNode(true);
+			let c = blueprint.cloneNode(true)
 			let span = c.getElementsByClassName("word-num")[0]
 			let input = c.getElementsByTagName("input")[0]
 			list.push(input)
@@ -237,16 +221,11 @@
 		Object.keys(dom).forEach((k) => {
 			let el = document.querySelector('#' + k)
 			if (!el) throw new Error('el not found #' + k)
-			dom[k] = el;
+			dom[k] = el
 		})
 	}
 
-	function hide(el) {
-		el.classList.add('hidden')
-	}
-
-	function show(el) {
-		el.classList.remove('hidden')
-	}
+	function hide(el) { el.classList.add('hidden') }
+	function show(el) { el.classList.remove('hidden') }
 
 })(this.CryptoJS)
