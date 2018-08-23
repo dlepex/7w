@@ -1,40 +1,28 @@
 (function (CryptoJS) {
 
 	const wordsCount = 7;
-	// dom elements cache
-	let dom = {}
+	let dom;
 	let model;
 
 	document.addEventListener("DOMContentLoaded", function () {
-		dom.wordInputs = []
-		domAppendWords(wordsCount)
-		document.querySelectorAll('input[name="mode"]').forEach(e => {
-			e.onchange = onChangeMode
-		})
-		dom.wordInputs.forEach(e => {
-			e.addEventListener('focus', () => {
-				hideOutputs()
-			})
-		})
-		dom.smode = document.querySelector("#s-mode")
-		dom.md5 = document.querySelector("#md5-alg")
+		let _el = document.body; // for the sake of code completion 
+		dom = { 
+			sMode: _el,  hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
+			showBtn: _el,  hashedStrSep: _el, result: _el, hashedStr: _el, pwdLength: _el,
+		}
+		domResolveByID(dom)
+		dom.wordInputs = domAppendWords(wordsCount)
 		dom.form = document.querySelector("form")
-		dom.hashedPane = document.querySelector("#hashed-pane")
-		dom.resultPane = document.querySelector("#result-pane")
-		dom.errPane = document.querySelector("#err-pane")
-		dom.err = document.querySelector("#err")
-		dom.secureInputs = document.querySelectorAll('input')
-		dom.showBtn = document.querySelector('#show-btn');
 
-		dom.sep = document.querySelector("#sep")
-		dom.result = document.querySelector("#result")
-		dom.str = document.querySelector("#str")
-		dom.len = document.querySelector("#length")
-
-		document.querySelector('#clear-btn').addEventListener("click", onClear);
-		document.querySelector('#gen-btn').addEventListener("click", onGenerate);
+		dom.secureInputs = dom.wordInputs.slice()  // inputs affected by mode change
+		dom.secureInputs.push(dom.result)
+	
+		document.querySelectorAll('input[name="mode"]').forEach(e => e.onchange = onChangeMode)
+		dom.wordInputs.forEach(e => e.addEventListener('focus', hideOutputs))
 		dom.showBtn.addEventListener("click", onShowPassword);
-		document.querySelector('#copy-btn').addEventListener("click", onGenerateAndCopy);
+		document.querySelector('#clearBtn').addEventListener("click", onClear);
+		document.querySelector('#genBtn').addEventListener("click", onGenerate);
+		document.querySelector('#copyBtn').addEventListener("click", onGenerateAndCopy);
 	});
 
 	function onClear() {
@@ -49,10 +37,10 @@
 	}
 
 	function clearInputs() {
-		dom.sep.value = ""
+		dom.hashedStrSep.value = ""
 		dom.wordInputs.forEach(w => w.value = "")
 		dom.result.value = ""
-		dom.str.value = ""
+		dom.hashedStr.value = ""
 		dom.showBtn.textContent = "show"
 	}
 
@@ -91,19 +79,18 @@
 		if (dom.wordInputs.some(w => !isValid(w))) {
 			return "a word should not contain whitespaces"
 		}
-		if (!isValid(dom.sep)) {
+		if (!isValid(dom.hashedStrSep)) {
 			return "wrong separator"
 		}
-		if (!isValid(dom.len)) {
+		if (!isValid(dom.pwdLength)) {
 			return "the password length must be in range 10..100"
 		}
-		return null
 	}
 
 	function readInputs(model) {
 		let exists;
 		let words = []
-		let sep = dom.sep.value || " ";
+		let sep = dom.hashedStrSep.value || " ";
 		for (let i = wordsCount - 1; i >= 0; i--) {
 			let el = dom.wordInputs[i]
 			let w = el.value.trim()
@@ -118,19 +105,19 @@
 				return;
 			}
 		}
-		if (words.length < 3) {
+		if (words.pwdLength < 3) {
 			model.err = "at least 3 words required"
 			return
 		}
 		let len = 0
-		words.forEach(w => len += w.length)
+		words.forEach(w => len += w.pwdLength)
 		if (len < 10) {
 			model.err = "total words length must be not less than 10"
 			return
 		}
 		words.reverse()
 		model.wordInputsords = words
-		model.str = words.join(sep)
+		model.hashedStr = words.join(sep)
 	}
 
 
@@ -143,8 +130,8 @@
 		}
 		hideErrPane()
 		show(dom.resultPane)
-		dom.str.value = model.str
-		model.pwd = genPassword(model.str).slice(0, dom.len.value | 0)
+		dom.hashedStr.value = model.hashedStr
+		model.pwd = genPassword(model.hashedStr).slice(0, dom.pwdLength.value | 0)
 		dom.result.value = model.pwd
 	}
 
@@ -153,9 +140,8 @@
 		dom.err.textContent = ""
 	}
 
-
 	function onChangeMode() {
-		let isStealth = dom.smode.checked
+		let isStealth = dom.sMode.checked
 		if (isStealth) { // s -> v
 			dom.form.classList.replace("v-form", "s-form")
 			changeInputType("text", "password")
@@ -183,43 +169,26 @@
 	}
 
 	function getHashAlg() {
-		switch (document.querySelector('input[name="alg"]:checked').id) {
-			case 'md5-alg': return CryptoJS.MD5;
-			case 'sha1-alg': return CryptoJS.SHA1;
-			case 'sha256-alg': return CryptoJS.SHA256;
+		let id = document.querySelector('input[name="alg"]:checked').id
+		switch (id) {
+			case 'md5Alg': return CryptoJS.MD5;
+			case 'sha1Alg': return CryptoJS.SHA1;
+			case 'sha256Alg': return CryptoJS.SHA256;
 		}
-	}
-
-	function domAppendWords(num) {
-		num = num || 7
-		let wc = document.getElementById("words-container")
-		let blueprint = wc.childNodes[1]
-		dom.wordInputs.push(blueprint.getElementsByTagName("input")[0])
-		let generate = (idx) => {
-			let c = blueprint.cloneNode(true);
-			let span = c.getElementsByClassName("word-num")[0]
-			let input = c.getElementsByTagName("input")[0]
-			dom.wordInputs.push(input)
-			span.textContent = idx + 1
-			input.setAttribute("id", "w" + idx)
-			return c
-		}
-		for (let i = 1; i < num; i++) {
-			let w = generate(i)
-			wc.appendChild(w)
-		}
+		throw new Error("unknown alg: " + id)
 	}
 
 	function removeNonAlphaNumeric(s) {
 		return s.replace(/[\W_]+/g, '');
 	}
+
 	function base64(s) {
 		return CryptoJS.enc.Base64.stringify(s)
 	}
+
 	function hashFunc(str) {
 		return getHashAlg()(str)
 	}
-
 
 	function genPassword(str) {
 		return removeNonAlphaNumeric(base64(hashFunc(str)))
@@ -240,6 +209,36 @@
 			console.error('copyToClipboard-err', err);
 		}
 		document.body.removeChild(textArea)
+	}
+
+
+	function domAppendWords(num) {
+		num = num || 7
+		let wc = document.getElementById("wordsPane")
+		let blueprint = wc.childNodes[1]
+		let list = [blueprint.getElementsByTagName("input")[0]]
+		let generate = (idx) => {
+			let c = blueprint.cloneNode(true);
+			let span = c.getElementsByClassName("word-num")[0]
+			let input = c.getElementsByTagName("input")[0]
+			list.push(input)
+			span.textContent = idx + 1
+			input.setAttribute("id", "w" + idx)
+			return c
+		}
+		for (let i = 1; i < num; i++) {
+			let w = generate(i)
+			wc.appendChild(w)
+		}
+		return list
+	}
+
+	function domResolveByID(dom) {
+		Object.keys(dom).forEach((k) => {
+			let el = document.querySelector('#' + k)
+			if (!el) throw new Error('el not found #' + k)
+			dom[k] = el;
+		})
 	}
 
 	function hide(el) {

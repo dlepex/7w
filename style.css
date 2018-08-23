@@ -13,9 +13,13 @@ body {
 
 form {
 	position: relative;
-	border-radius: 7px;
+	border-radius: 1em;
+	padding: 1em 0.5em 1em 0.5em
 }
 
+p {
+	margin: 0em
+}
 
 .v-form {
 	background-color: white;
@@ -61,34 +65,39 @@ button:hover {
 }
 
 #result {
-	width: 15em
+	width: 18em
 }
 
-#str {
-	width: 25em
+#hashedStr {
+	width: 30em
 }
 
-#length {
+#pwdLength {
 	width: 3em;
 	margin-right: 2em;
 }
 
-#sep {
+#hashedStrSep {
 	width: 4em
 }
+
 input {
 	font-size: 80%;
 }
+
 input:invalid {
 	color: red; 
 	border: 0.1em ridge red;
 }
 
-label {
-	color: teal;
+label, .label {
 	font-size: 80%;
 	vertical-align: sub;
 	padding-right: 0.2em;
+}
+
+.label {
+	color: teal;
 }
 
 .word-num {
@@ -103,11 +112,12 @@ fieldset {
 	border:0.1em solid tan;
 	margin-bottom: 1em;
 }
-#err-pane {
+
+#errPane {
 	border:0.1em solid red;
 	color: red;
 }
-#err-pane>legend {
+#errPane>legend {
 	color: red;
 }
 
@@ -117,22 +127,21 @@ fieldset {
 	margin-bottom: 1em;
 }
 
-.control-buttons {
-	display: inherit;
-}
-
 .word {
 	display: inline-block;
 	margin-right: 1em;
 }
 
-#words-container {
+#wordsPane {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	flex-wrap: wrap
 }
 
+#algPane {
+	display: inline-block;
+}
 .word>input {
 	width: 1.5em;
 }
@@ -144,6 +153,10 @@ fieldset {
 .info {
 	color: gray;
 	font-size: 70%;
+}
+
+.ib {
+	display: inline-block !important;
 }
 
 .hidden { display: none !important; }

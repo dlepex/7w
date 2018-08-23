@@ -17,47 +17,52 @@
 <body>
 	<form autocomplete="off" class="s-form">
 		<div class="mode-container">
-			<label class="mode-label"><input type="radio" name="mode" value="s" id="s-mode" checked>stealth</label>
-			<label class="mode-label"><input type="radio" name="mode" value="v" id="v-mode">visible</label>
+			<label class="mode-label"><input type="radio" name="mode" value="s" id="sMode" checked>stealth</label>
+			<label class="mode-label"><input type="radio" name="mode" value="v" id="vMode">visible</label>
 		</div>
 		<fieldset>
 			<legend>Words</legend>
-			<div id="words-container">
+			<div id="wordsPane">
 				<div class="word"><span class="word-num">1</span><input id="w0" pattern="\S+" type="password" /></div>
 			</div>
-			<div class="info"> Words must be memorable. For maximum security at least 1 word must be nondictionary.</div>
+			<p class="info"> Words must be memorable. For maximum security at least 1 word must be nondictionary.</p>
 		</fieldset>
 		<div class="control-pane">
-			<label for="length">password length</label><input type="number" id="length" value="15" min="10" max="100">
+			<label class="label" for="pwdLength">password length</label><input type="number" id="pwdLength" value="15" min="10" max="100">
 
-			<div class="control-buttons">
-				<button type="button" id="gen-btn">Generate</button>
-				<button type="button" id="copy-btn">Generate&Copy</button>
-				<button type="button" id="clear-btn">Clear</button>
+			<div class="ib">
+				<button type="button" id="genBtn">Generate</button>
+				<button type="button" id="copyBtn">Generate&Copy</button>
+				<button type="button" id="clearBtn">Clear</button>
 			</div>
 		</div>
-		<fieldset id="err-pane" class="hidden">
+		<fieldset id="errPane" class="hidden">
 			<legend>Error</legend>
-			<span id="err">err err r</span>
+			<span id="err"></span>
 		</fieldset>
-		<fieldset id="result-pane" class="hidden">
+		<fieldset id="resultPane" class="hidden">
 			<legend>Result</legend>
 			<div class="ed">
 				<input type="password" id="result" readonly>
-				<button type="button" class="edbtn" id="show-btn">show</button>
+				<button type="button" class="edbtn" id="showBtn">show</button>
 			</div>
-			<div id="hashed-pane" class="hidden ed">
-				<label for="str">hashed string</label>
-				<input type="password" id="str" readonly>
+			<div id="hashedPane" class="hidden ed">
+				<label class="label" for="hashedStr">hashed string</label>
+				<input type="text" id="hashedStr" readonly>
 			</div>
 		</fieldset>
 		<fieldset>
 			<legend>Extra Params</legend>
-			<label for="sep">separator</label><input type="text" id="sep">
-			<label><input type="radio" name="alg" value="s" id="md5-alg" checked>MD5</label>
-			<label><input type="radio" name="alg" id="sha1-alg">SHA1</label>
-			<label><input type="radio" name="alg" id="sha256-alg">SHA256</label>
-			<div class="info">Default separator is 1 space. If you change extras be sure you can remember them.</div>
+			<div class="ib">
+				<label class="label" for="sep">separator</label><input type="text" id="hashedStrSep">
+				<div class="ib">
+					<label class="label">hash function</label>
+					<label><input type="radio" name="alg" id="md5Alg" checked>MD5</label>
+					<label><input type="radio" name="alg" id="sha1Alg">SHA1</label>
+					<label><input type="radio" name="alg" id="sha256Alg">SHA256</label>
+				</div>
+			</div>
+			<p class="info">Default separator is 1 space. If you change extras be sure you can remember them.</p>
 		</fieldset>
 	</form>
 </body>
