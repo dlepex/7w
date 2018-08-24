@@ -8,7 +8,8 @@
 		let _el = document.body // for the sake of code completion 
 		dom = { 
 			sMode: _el,  hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
-			showBtn: _el,  hashedStrSep: _el, result: _el, hashedStr: _el, pwdLength: _el,
+			showBtn: _el,  hashedStrSep: _el, result: _el, hashedStr: _el,
+			pwdLength: _el, pwdInfo: _el,
 		}
 		domResolveByID(dom)
 		dom.wordInputs = domAppendWords(wordsCount)
@@ -47,9 +48,8 @@
 	function onGenerate() {
 		model = {}
 		model.err = checkValidity()
-		if(!model.err) {
-			readInputs(model)
-		}
+		if (!model.err) readInputs(model)
+		if (!model.err) calculate(model)
 		showOutput(model)
 	}
 
@@ -83,7 +83,7 @@
 			return "wrong separator"
 		}
 		if (!isValid(dom.pwdLength)) {
-			return "the password length must be in range 10..100"
+			return "the password length must be in range 10..42"
 		}
 	}
 
@@ -121,18 +121,32 @@
 	}
 
 
+	function calculate(model) {
+		let pwd = genPassword(model.hashedStr)
+		model.reqLen = parseInt(dom.pwdLength.value)
+		if (pwd.length < model.reqLen) {
+			model.warn = 'the result is shorter than required, length = ' + pwd.length
+		}
+		model.pwd = pwd.slice(0, model.reqLen)
+	}
+
+
 	function showOutput(model) {
 		if (model.err) {
 			hide(dom.resultPane)
-			show(dom.errPane)
 			dom.err.textContent = model.err
+			show(dom.errPane)
 			return
 		}
+		hide(dom.pwdInfo)
 		hide(dom.errPane)
-		show(dom.resultPane)
 		dom.hashedStr.value = model.hashedStr
-		model.pwd = genPassword(model.hashedStr).slice(0, dom.pwdLength.value | 0)
 		dom.result.value = model.pwd
+		if (model.warn) {
+			dom.pwdInfo.textContent = model.warn
+			show(dom.pwdInfo)
+		}
+		show(dom.resultPane)
 	}
 
 	function onChangeMode() {
@@ -171,6 +185,12 @@
 			case 'sha256Alg': return CryptoJS.SHA256
 		}
 		throw new Error("unknown alg: " + id)
+	}
+
+	function whatHash(len) {
+		if (len <= 21) return "at least MD5"
+		if (len <= 25) return "at least SHA1"
+		return "SHA256"
 	}
 
 	function removeNonAlphaNumeric(s) {	return s.replace(/[\W_]+/g, '')	}
