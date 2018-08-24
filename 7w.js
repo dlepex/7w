@@ -187,12 +187,6 @@
 		throw new Error("unknown alg: " + id)
 	}
 
-	function whatHash(len) {
-		if (len <= 21) return "at least MD5"
-		if (len <= 25) return "at least SHA1"
-		return "SHA256"
-	}
-
 	function removeNonAlphaNumeric(s) {	return s.replace(/[\W_]+/g, '')	}
 	function base64(s) { return CryptoJS.enc.Base64.stringify(s) }
 	function hashFunc(str) { return getHashAlg()(str) }
