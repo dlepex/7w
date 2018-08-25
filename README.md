@@ -14,7 +14,7 @@ purely browser-side calculation facility.** It uses your brain storage ability i
 
 The password is calculated as follows:
 ```javascript
-removeNonAlphaNumeric(base64(hashFunc(str)))
+removeNonAlphaNumeric(base64(hashFunc(str))).slice(0, password_length)
 // hashFunc is one of: MD5, SHA1, SHA256
 // str - is the concatenated sequence of words, with default separator == 1 space
 ```
