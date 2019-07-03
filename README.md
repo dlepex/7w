@@ -4,11 +4,8 @@ https://dlepex.github.io/7w
 
 *7 words* is the password generator. It converts a mnemonic sequence of words into an
 unreadable  & unguessable password.
-The only thing the user must remember is the sequence of words.
-
-
-Unlike so called "password managers" - *7w* doesn't store or send your data to third party. **It is
-purely browser-side calculation facility.** It uses your brain storage ability in a meaninfull manner. https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two
+*7w* doesn't store or send your data to third party. **It is
+purely browser-side calculation facility.** 
 
 ### Algorithm
 
