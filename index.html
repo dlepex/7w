@@ -2,73 +2,75 @@
 <html>
 
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="Cache-control" content="no-cache">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>7w: Mnemonic Password Generator</title>
-	<meta name="description" content="Mnemonic Password Generator, Password manager, Password anti-manager">
-	<meta name="keywords" content="mnemonic,password,generator,password generator">
-	<meta name="author" content="Denis Lepekhin">
-	<link rel="stylesheet" href="style.css">
-	<script src="cryptojs-min.js" type="text/javascript"></script>
-	<script src="7w.js" type="text/javascript"></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-control" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>7w: Mnemonic Password Generator</title>
+  <meta name="description" content="Mnemonic Password Generator, Password manager, Password anti-manager">
+  <meta name="keywords" content="mnemonic,password,generator,password generator">
+  <meta name="author" content="Denis Lepekhin">
+  <link rel="stylesheet" href="style.css">
+  <script src="cryptojs-min.js" type="text/javascript"></script>
+  <script src="7w.js" type="text/javascript"></script>
 </head>
 
 <body>
-	<form autocomplete="off" class="s-form">
-		<div class="mode-container">
-			<p class="ib">
-			<label class="mode-label"><input type="radio" name="mode" value="s" id="sMode" checked>stealth</label>
-			<label class="mode-label"><input type="radio" name="mode" value="v" id="vMode">visible</label>
-			</p>
-			<p class="readme ib"> <a class="" href="https://github.com/dlepex/7w#7w">readme</a></p>
-		</div>
-		<fieldset>
-			<legend>Words</legend>
-			<div id="wordsPane">
-				<div class="word"><span class="word-num">1</span><input id="w0" pattern="\S+" type="password" /></div>
-			</div>
-			<p class="info"> Words must be memorable. For maximum security at least 1 word must be nondictionary.</p>
-		</fieldset>
-		<div class="control-pane">
-			<label class="label" for="pwdLength">password length</label><input type="number" id="pwdLength" value="15" min="10" max="42">
+  <form autocomplete="off" class="s-form">
+    <div class="mode-container">
+      <p class="ib">
+        <label class="mode-label"><input type="radio" name="mode" value="s" id="sMode" checked>stealth</label>
+        <label class="mode-label"><input type="radio" name="mode" value="v" id="vMode">visible</label>
+      </p>
+      <p class="readme ib"> <a class="" href="https://github.com/dlepex/7w#7w">readme</a></p>
+    </div>
+    <fieldset>
+      <legend>Words</legend>
+      <div id="wordsPane">
+        <div class="word"><span class="word-num">1</span><input id="w0" pattern="\S+" type="password" /></div>
+      </div>
+      <p class="info"> Words must be memorable. For maximum security at least 1 word must be nondictionary.</p>
+    </fieldset>
+    <div class="control-pane">
+      <label class="label" for="pwdLength">password length</label><input type="number" id="pwdLength" value="15"
+        min="10" max="300">
 
-			<div class="ib">
-				<button type="button" id="genBtn">Generate</button>
-				<button type="button" id="copyBtn">Generate&Copy</button>
-				<button type="button" id="clearBtn">Clear</button>
-			</div>
-		</div>
-		<fieldset id="errPane" class="hidden">
-			<legend>Error</legend>
-			<span id="err"></span>
-		</fieldset>
-		<fieldset id="resultPane" class="hidden">
-			<legend>Result</legend>
-			<div class="ed">
-				<input type="password" id="result" readonly>
-				<button type="button" class="edbtn" id="showBtn">show</button>
-			</div>
-			<p class="info hidden" id="pwdInfo"></p>
-			<div id="hashedPane" class="hidden ed">
-				<label class="label" for="hashedStr">hashed string</label>
-				<input type="text" id="hashedStr" readonly>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend>Extra Params</legend>
-			<div class="ib">
-				<label class="label" for="sep">separator</label><input type="text" id="hashedStrSep">
-				<div class="ib">
-					<label class="label">hash function</label>
-					<label><input type="radio" name="alg" id="md5Alg" checked>MD5</label>
-					<label><input type="radio" name="alg" id="sha1Alg">SHA1</label>
-					<label><input type="radio" name="alg" id="sha256Alg">SHA256</label>
-				</div>
-			</div>
-			<p class="info">Default separator is 1 space. If you change extras be sure you can remember them.</p>
-		</fieldset>
-	</form>
+      <div class="ib">
+        <button type="button" id="genBtn">Generate</button>
+        <button type="button" id="copyBtn">Generate&Copy</button>
+        <button type="button" id="clearBtn">Clear</button>
+      </div>
+    </div>
+    <fieldset id="errPane" class="hidden">
+      <legend>Error</legend>
+      <span id="err"></span>
+    </fieldset>
+    <fieldset id="resultPane" class="hidden">
+      <legend>Result</legend>
+      <div class="ed">
+        <input type="password" id="result" readonly>
+        <button type="button" class="edbtn" id="showBtn">show</button>
+      </div>
+      <p class="info hidden" id="pwdInfo"></p>
+      <div id="hashedPane" class="hidden ed">
+        <label class="label" for="hashedStr">hashed string</label>
+        <input type="text" id="hashedStr" readonly>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Extra Params</legend>
+      <div class="ib">
+        <label class="label" for="sep">separator</label><input type="text" id="hashedStrSep">
+        <div class="ib">
+          <label class="label">hash function</label>
+          <label><input type="radio" name="alg" id="sha256IterAlg" checked>SHA++</label>
+          <label><input type="radio" name="alg" id="sha256Alg">SHA256</label>
+          <label><input type="radio" name="alg" id="sha1Alg">SHA1</label>
+          <label><input type="radio" name="alg" id="md5Alg">MD5</label>
+        </div>
+      </div>
+      <p class="info">Default separator is 1 space. If you change extras be sure you can remember them.</p>
+    </fieldset>
+  </form>
 </body>
 
 </html>

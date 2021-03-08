@@ -81,7 +81,7 @@
   function checkValidity() {
     if (dom.wordInputs.some(w => !isValid(w))) return 'a word should not contain whitespaces'
     if (!isValid(dom.hashedStrSep)) return 'wrong separator'
-    if (!isValid(dom.pwdLength)) return 'the password length must be in range 10..42'
+    if (!isValid(dom.pwdLength)) return 'the password length must be in range 10..300'
   }
 
   function readInputs(model) {
@@ -174,6 +174,7 @@
   function getHashAlg() {
     let id = document.querySelector('input[name="alg"]:checked').id
     switch (id) {
+      case 'sha256IterAlg': return sha256IterAlg
       case 'md5Alg': return CryptoJS.MD5
       case 'sha1Alg': return CryptoJS.SHA1
       case 'sha256Alg': return CryptoJS.SHA256
@@ -184,6 +185,12 @@
   function removeNonAlphaNumeric(s) { return s.replace(/[\W_]+/g, '') }
   function base64(s) { return CryptoJS.enc.Base64.stringify(s) }
   function hashFunc(str) { return getHashAlg()(str) }
+
+  function sha256IterAlg(str) {
+    const sha2 = CryptoJS.SHA256
+    return sha2(sha2(str) + str)
+  }
+
   function genPassword(str) { return removeNonAlphaNumeric(base64(hashFunc(str))) }
 
   function copyToClipboard(text) {

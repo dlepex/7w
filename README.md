@@ -5,15 +5,16 @@ https://dlepex.github.io/7w
 *7 words* is the password generator. It converts a mnemonic sequence of words into an
 unreadable  & unguessable password.
 *7w* doesn't store or send your data to third party. **It is
-purely browser-side calculation facility.** 
+purely browser-side calculation facility.**
 
 ### Algorithm
 
 The password is calculated as follows:
 ```javascript
 removeNonAlphaNumeric(base64(hashFunc(str))).slice(0, password_length)
-// hashFunc is one of: MD5, SHA1, SHA256
-// str - is the concatenated sequence of words, with default separator == 1 space
+// hashFunc is one of: SHA++, MD5, SHA1, SHA256 or
+// str - is the concatenated sequence of words, with default separator == 1 space.
+// SHA++ is calculated as follows: sha256(sha256(str) + str)
 ```
 
 ### Security hints
