@@ -12,9 +12,11 @@ purely browser-side calculation facility.**
 The password is calculated as follows:
 ```javascript
 removeNonAlphaNumeric(base64(hashFunc(str))).slice(0, password_length)
-// hashFunc is one of: SHA++, MD5, SHA1, SHA256 or
+// hashFunc is one of: SHA++, MD5, SHA1, SHA256.
 // str - is the concatenated sequence of words, with default separator == 1 space.
-// SHA++ is calculated as follows: sha256(sha256(str) + str)
+
+// SHA++ is calculated as follows:
+sha256(base64(sha256(str)).replace('=', '') + ' ' + str)
 ```
 
 ### Security hints
@@ -23,7 +25,6 @@ removeNonAlphaNumeric(base64(hashFunc(str))).slice(0, password_length)
 * You may use the generated string only as a part of your real password (prefix, middle or postfix).
 
 ### Implementation notes
-
 
 * CryptoJS is the only dependency (it was minified, and cipher parts were purged to reduce size)
 * Doesn't work in elderly browsers

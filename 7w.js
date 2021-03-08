@@ -188,7 +188,7 @@
 
   function sha256IterAlg(str) {
     const sha2 = CryptoJS.SHA256
-    return sha2(sha2(str) + str)
+    return sha2(base64(sha2(str)).replace('=', '') + ' ' + str)
   }
 
   function genPassword(str) { return removeNonAlphaNumeric(base64(hashFunc(str))) }
