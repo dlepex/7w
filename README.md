@@ -7,25 +7,14 @@ unreadable  & unguessable password.
 *7w* doesn't store or send your data to third party. **It is
 purely browser-side calculation facility.**
 
-### Algorithm
+### Implementation notes
 
-The password is calculated as follows:
-```javascript
-removeNonAlphaNumeric(base64(hashFunc(str))).slice(0, password_length)
-// hashFunc is one of: SHA++, MD5, SHA1, SHA256.
-// str - is the concatenated sequence of words, with default separator == 1 space.
-
-// SHA++ is calculated as follows:
-sha256(base64(sha256(str)).replace('=', '') + ' ' + str)
-```
+* https://github.com/dlepex/entrop (CLI tool, compiled to WASM) is used to generate a password
+  * 7w is just a UI wrapper for _entrop_
+* It works only in sufficiently modern browsers that support WASM.
+* Mobile browsers may have some quirks but do work overall
 
 ### Security hints
 
 * At least 1 word of sequence should be incorrect i.e. nondictionary
 * You may use the generated string only as a part of your real password (prefix, middle or postfix).
-
-### Implementation notes
-
-* CryptoJS is the only dependency (it was minified, and cipher parts were purged to reduce size)
-* Doesn't work in elderly browsers
-* Mobile browsers may have some quirks but do work overall

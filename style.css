@@ -2,8 +2,8 @@ body {
   font: 1em/150% sans-serif;
   padding: 1em;
   margin: 0 auto;
-	max-width: 36em;
-	min-width: 20em;
+  max-width: 36em;
+  min-width: 20em;
 }
 
 @media (max-width:1000) {
@@ -13,160 +13,167 @@ body {
 }
 
 form {
-	position: relative;
-	border-radius: 1em;
-	padding: 1em 0.5em 1em 0.5em
+  position: relative;
+  border-radius: 1em;
+  padding: 1em 0.5em 1em 0.5em
 }
 
 .readme {
-	float: right;
-	font-size: 80%;
+  float: right;
+  font-size: 80%;
 }
 
 p {
-	margin: 0em
+  margin: 0em
 }
 
 .v-form {
-	background-color: white;
+  background-color: white;
 }
 
 .s-form {
-	background-color: linen;
+  background-color: linen;
 }
 
 .readme>a {
-	font-size: 80%
+  font-size: 80%
 }
 
 .mode-label {
-	color: darkgoldenrod;
-	font-weight: bold;
+  color: darkgoldenrod;
+  font-weight: bold;
 }
 
 legend {
-	color: darkblue;
+  color: darkblue;
 }
 
-
 button {
-	text-align: center;
-	outline: none;
-	border:0.2em;
-	border-radius: 1em;
-	background-color: tan;
-	color: darkblue;
-	height: 2.5em;
-	box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2), 0 3px 4px 0 rgba(0,0,0,0.19);
+  text-align: center;
+  outline: none;
+  border: 0.2em;
+  border-radius: 1em;
+  background-color: tan;
+  color: darkblue;
+  height: 2.5em;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.19);
 }
 
 .edbtn {
-	height: 2em;
-	box-shadow: none;
+  height: 2em;
+  box-shadow: none;
 }
 
 button:active {
   /*box-shadow: 0 5px #666;*/
-	transform: translateY(0.2em);
+  transform: translateY(0.2em);
 }
 
 button:hover {
-	background-color:wheat;
+  background-color: wheat;
 }
 
 #result {
-	width: 18em
+  width: 18em
 }
 
-#hashedStr {
-	width: 30em
+#result {
+  width: 30em
+}
+
+#entropArgs {
+  width: 30em
 }
 
 #pwdLength {
-	width: 3em;
-	margin-right: 2em;
+  width: 3em;
+  margin-right: 2em;
 }
 
 #hashedStrSep {
-	width: 4em
+  width: 4em
 }
 
 input {
-	font-size: 80%;
+  font-size: 80%;
 }
 
 input:invalid {
-	color: red; 
-	border: 0.1em ridge red;
+  color: red;
+  border: 0.1em ridge red;
 }
 
 label, .label {
-	font-size: 80%;
-	vertical-align: sub;
-	padding-right: 0.2em;
+  font-size: 80%;
+  vertical-align: sub;
+  padding-right: 0.2em;
 }
 
 .label {
-	color: teal;
+  color: teal;
 }
 
 .word-num {
-	color: teal;
-	font-size: 70%;
-	vertical-align: super;
-	padding-right: 0.2em;
+  color: teal;
+  font-size: 70%;
+  vertical-align: super;
+  padding-right: 0.2em;
 }
 
 fieldset {
-	border-radius: 7px;
-	border:0.1em solid tan;
-	margin-bottom: 1em;
+  border-radius: 7px;
+  border: 0.1em solid tan;
+  margin-bottom: 1em;
 }
 
 #errPane {
-	border:0.1em solid red;
-	color: red;
+  border: 0.1em solid red;
+  color: red;
 }
+
 #errPane>legend {
-	color: red;
+  color: red;
 }
 
 .control-pane {
-	display: inline-block;
-	margin-left: 1em;
-	margin-bottom: 1em;
+  display: inline-block;
+  margin-left: 1em;
+  margin-bottom: 1em;
 }
 
 .word {
-	display: inline-block;
-	margin-right: 1em;
+  display: inline-block;
+  margin-right: 1em;
 }
 
 #wordsPane {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	flex-wrap: wrap
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap
 }
 
 #algPane {
-	display: inline-block;
+  display: inline-block;
 }
+
 .word>input {
-	width: 1.5em;
+  width: 1.5em;
 }
 
 .word>input:focus {
-	width: 12em;
+  width: 12em;
 }
 
 .info {
-	color: gray;
-	font-size: 70%;
+  color: gray;
+  font-size: 70%;
 }
 
 .ib {
-	display: inline-block !important;
+  display: inline-block !important;
 }
 
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
