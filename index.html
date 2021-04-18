@@ -11,6 +11,19 @@
   <meta name="author" content="Denis Lepekhin">
   <link rel="stylesheet" href="style.css">
   <script src="cryptojs-min.js" type="text/javascript"></script>
+  <script src="wasm_exec.js"></script>
+  <script async>
+    const go = new Go()
+    const instantiateStreaming = async (resp, importObject) => {
+      const source = await (await resp).arrayBuffer();
+      return await WebAssembly.instantiate(source, importObject);
+    };
+    instantiateStreaming(fetch("entrop.wasm"), go.importObject).then((result) => {
+      go.run(result.instance)
+    }).catch((err) => {
+      console.error("wasm err:" + err)
+    });
+  </script>
   <script src="7w.js" type="text/javascript"></script>
 </head>
 
@@ -31,8 +44,8 @@
       <p class="info"> Words must be memorable. For maximum security at least 1 word must be nondictionary.</p>
     </fieldset>
     <div class="control-pane">
-      <label class="label" for="pwdLength">password length</label><input type="number" id="pwdLength" value="20"
-        min="10" max="300">
+      <label class="label" for="pwdLength">password length</label><input type="number" id="pwdLength" value="15" min="4"
+        max="300">
 
       <div class="ib">
         <button type="button" id="genBtn">Generate</button>
@@ -52,8 +65,6 @@
       </div>
       <p class="info hidden" id="pwdInfo"></p>
       <div id="hashedPane" class="hidden ed">
-        <label class="label" for="hashedStr">hashed string</label>
-        <input type="text" id="hashedStr" readonly>
       </div>
     </fieldset>
     <fieldset>
@@ -62,10 +73,12 @@
         <label class="label" for="sep">separator</label><input type="text" id="hashedStrSep">
         <div class="ib">
           <label class="label">hash function</label>
-          <label><input type="radio" name="alg" id="sha256IterAlg" checked>SHA++</label>
-          <label><input type="radio" name="alg" id="sha256Alg">SHA256</label>
-          <label><input type="radio" name="alg" id="sha1Alg">SHA1</label>
-          <label><input type="radio" name="alg" id="md5Alg">MD5</label>
+          <label><input type="radio" name="alg" id="pbs5" checked>pbkdf2-sha512</label>
+          <label><input type="radio" name="alg" id="pbs2">pbkdf2-sha256</label>
+          <label><input type="radio" name="alg" id="ar">argon2</label>
+        </div>
+        <div id="entrop_pane">
+          <label class="label" for="entropArgs">args</label><input type="text" id="entropArgs">
         </div>
       </div>
       <p class="info">Default separator is 1 space. If you change extras be sure you can remember them.</p>

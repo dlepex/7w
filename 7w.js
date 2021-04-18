@@ -7,8 +7,8 @@
     let _el = document.body // for the sake of code completion
     dom = {
       sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
-      showBtn: _el, hashedStrSep: _el, result: _el, hashedStr: _el,
-      pwdLength: _el, pwdInfo: _el,
+      showBtn: _el, hashedStrSep: _el, result: _el,
+      pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el, copyBtn: _el
     }
     domResolveByID(dom)
     dom.wordInputs = domAppendWords(wordsCount)
@@ -39,7 +39,6 @@
     dom.hashedStrSep.value = ''
     dom.wordInputs.forEach(w => w.value = '')
     dom.result.value = ''
-    dom.hashedStr.value = ''
     dom.showBtn.textContent = 'show'
   }
 
@@ -81,13 +80,12 @@
   function checkValidity() {
     if (dom.wordInputs.some(w => !isValid(w))) return 'a word should not contain whitespaces'
     if (!isValid(dom.hashedStrSep)) return 'wrong separator'
-    if (!isValid(dom.pwdLength)) return 'the password length must be in range 10..300'
+    if (!isValid(dom.pwdLength)) return 'the password length is too short'
   }
 
   function readInputs(model) {
     let exists
     let words = []
-    let sep = dom.hashedStrSep.value || ' '
     for (let i = wordsCount - 1; i >= 0; i--) {
       let el = dom.wordInputs[i]
       let w = el.value.trim()
@@ -99,31 +97,53 @@
         words.push(w)
       } else if (exists) {
         model.err = 'words cannot have gaps'
-        return
+        return model
       }
     }
     if (words.length < 3) {
       model.err = 'at least 3 words required'
-      return
+      return model
     }
     let len = 0
     words.forEach(w => len += w.length)
     if (len < 10) {
       model.err = 'total words length must be not less than 10'
-      return
+      return model
     }
     words.reverse()
-    model.wordInputs = words
-    model.hashedStr = words.join(sep)
+    model.words = words.join(' ')
+    model.sep = dom.hashedStrSep.value || ' '
+    model.args = dom.entropArgs.value || ''
+    model.reqLen = parseInt(dom.pwdLength.value)
+    return model
   }
 
   function calculate(model) {
-    let pwd = genPassword(model.hashedStr)
-    model.reqLen = parseInt(dom.pwdLength.value)
-    if (pwd.length < model.reqLen) {
-      model.warn = 'the result is shorter than required, length = ' + pwd.length
+    let args = model.args
+
+    if (!args.includes('-a ')) {
+      args += ' -a ' + getHashAlg()
     }
-    model.pwd = pwd.slice(0, model.reqLen)
+    if (!args.includes('-s ') && model.sep != ' ') {
+      args += ' -s ' + model.sep
+    }
+    if (!args.includes('-l ')) {
+      args += ' -l ' + model.reqLen
+    }
+    args += ' ' + model.words
+
+    let start = new Date().getTime()
+    let pwd = window.Entrop_GenPassword(args)
+    let duration = new Date().getTime() - start
+    if (pwd.startsWith('error: ')) {
+      model.err = pwd
+      return
+    }
+    model.warn = `duration: ${duration}ms`
+    if (pwd.length < model.reqLen) {
+      model.warn += ', the result is shorter than required, length = ' + pwd.length
+    }
+    model.pwd = pwd
   }
 
   function writeOutputs(model) {
@@ -135,7 +155,6 @@
     }
     hide(dom.pwdInfo)
     hide(dom.errPane)
-    dom.hashedStr.value = model.hashedStr
     dom.result.value = model.pwd
     if (model.warn) {
       dom.pwdInfo.textContent = model.warn
@@ -172,26 +191,8 @@
   }
 
   function getHashAlg() {
-    let id = document.querySelector('input[name="alg"]:checked').id
-    switch (id) {
-      case 'sha256IterAlg': return sha256IterAlg
-      case 'md5Alg': return CryptoJS.MD5
-      case 'sha1Alg': return CryptoJS.SHA1
-      case 'sha256Alg': return CryptoJS.SHA256
-    }
-    throw new Error('unknown alg: ' + id)
+    return document.querySelector('input[name="alg"]:checked').id
   }
-
-  function removeNonAlphaNumeric(s) { return s.replace(/[\W_]+/g, '') }
-  function base64(s) { return CryptoJS.enc.Base64.stringify(s) }
-  function hashFunc(str) { return getHashAlg()(str) }
-
-  function sha256IterAlg(str) {
-    const sha2 = CryptoJS.SHA256
-    return sha2(base64(sha2(str)).replace('=', '') + ' ' + str)
-  }
-
-  function genPassword(str) { return removeNonAlphaNumeric(base64(hashFunc(str))) }
 
   function copyToClipboard(text) {
     let textArea = document.createElement('textarea')
@@ -240,5 +241,10 @@
 
   function hide(el) { el.classList.add('hidden') }
   function show(el) { el.classList.remove('hidden') }
+
+  function disableBtns(flag) {
+    dom.copyBtn.disabled = flag
+    dom.genBtn.disabled = flag
+  }
 
 })(this.CryptoJS)
