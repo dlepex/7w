@@ -11,7 +11,6 @@ purely browser-side calculation facility.**
 
 * https://github.com/dlepex/entrop (CLI tool, compiled to WASM) is used to generate a password
   * 7w is just a UI wrapper for _entrop_
-  * not all algorithms are available in UI due to deprecation or experimental status.
   * use `cmdline` input to specify/override _entrop_ command line params directly
 * It works only in sufficiently modern browsers that support WASM.
 * Mobile browsers may have some quirks but do work overall
@@ -21,3 +20,4 @@ purely browser-side calculation facility.**
 
 * At least 1 word of sequence should be incorrect i.e. nondictionary
 * You may use the generated string only as a part of your real password (prefix, middle or postfix).
+* Do not use deprecated `old` algorithms (for backward compat. only)

@@ -8,7 +8,8 @@
     dom = {
       sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
       showBtn: _el, hashedStrSep: _el, result: _el,
-      pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el, copyBtn: _el
+      pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el,
+      copyBtn: _el, alg: _el, charset: _el
     }
     domResolveByID(dom)
     dom.wordInputs = domAppendWords(wordsCount)
@@ -124,6 +125,9 @@
     if (!args.includes('-a ')) {
       args += ' -a ' + getHashAlg()
     }
+    if (!args.includes('-c ')) {
+      args += ' -c ' + getCharset()
+    }
     if (!args.includes('-s ') && model.sep != ' ') {
       args += ' -s ' + model.sep
     }
@@ -191,7 +195,11 @@
   }
 
   function getHashAlg() {
-    return document.querySelector('input[name="alg"]:checked').id
+    return dom.alg.value
+  }
+
+  function getCharset() {
+    return dom.charset.value
   }
 
   function copyToClipboard(text) {
