@@ -157,6 +157,10 @@ fieldset {
   display: inline-block;
 }
 
+#result {
+  font-family: 'Monaco', 'Courier New', Courier, monospace;
+}
+
 .word>input {
   width: 1.5em;
 }
