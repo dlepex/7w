@@ -11,8 +11,11 @@ purely browser-side calculation facility.**
 
 * https://github.com/dlepex/entrop (CLI tool, compiled to WASM) is used to generate a password
   * 7w is just a UI wrapper for _entrop_
+  * not all algorithms are available in UI due to deprecation or experimental status.
+  * use `cmdline` input to specify/override _entrop_ command line params directly
 * It works only in sufficiently modern browsers that support WASM.
 * Mobile browsers may have some quirks but do work overall
+  * Some browsers are slow (in particular for argon2), it is recommended to try some other browser if your current is slow.
 
 ### Security hints
 
