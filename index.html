@@ -11,7 +11,7 @@
   <meta name="author" content="Denis Lepekhin">
   <link rel="stylesheet" href="style.css">
   <script src="wasm_exec.js"></script>
-  <script async>
+  <script>
     const go = new Go()
     const instantiateStreaming = async (resp, importObject) => {
       const source = await (await resp).arrayBuffer();
@@ -19,6 +19,9 @@
     };
     instantiateStreaming(fetch("entrop.wasm"), go.importObject).then((result) => {
       go.run(result.instance)
+      setTimeout(() => {
+        document.querySelector('#version').innerHTML = window.Entrop_Version
+      }, 100)
     }).catch((err) => {
       console.error("wasm err:" + err)
     });
@@ -98,7 +101,9 @@
       </div>
       <p class="info">Default separator is 1 space. If you change extras be sure you can remember them.</p>
     </fieldset>
+
   </form>
+  <p id="version" class="info readme"></p>
 </body>
 
 </html>
