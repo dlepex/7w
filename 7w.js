@@ -2,6 +2,7 @@
 
   const wordsCount = 7
   let dom
+  var calcInProgress = false
 
   document.addEventListener('DOMContentLoaded', () => {
     let _el = document.body // for the sake of code completion
@@ -44,6 +45,7 @@
   }
 
   function onGenerate() {
+    if (calcInProgress) return
     doGenerate()
   }
 
@@ -154,7 +156,7 @@
         }
         model.pwd = pwd
         writeOutputs(model)
-      }, 0)
+      }, 100)
 
   }
 
@@ -259,11 +261,13 @@
   function show(el) { el.classList.remove('hidden') }
 
   function startCalcProgress() {
+    calcInProgress = true
     hide(dom.btnPane)
     show(dom.waitPane)
   }
 
   function stopCalcProgress() {
+    calcInProgress = false
     hide(dom.waitPane)
     show(dom.btnPane)
   }
