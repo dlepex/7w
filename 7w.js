@@ -55,15 +55,15 @@
     if (!model.err) readInputs(model)
     if (!model.err) {
       calculate(model)
-    } else writeOutputs(model)
+    } else {
+      writeOutputs(model)
+    }
   }
 
   function onGenerateAndCopy() {
-    let model = {}
-    doGenerate(model)
-    if (!model.err) {
-      copyToClipboard(model.pwd)
-    }
+    doGenerate({
+      copyToClipboard: true
+    })
   }
 
   function onShowPassword() {
@@ -122,9 +122,10 @@
     return model
   }
 
+  // Async. computation using setTimeout
   function calculate(model) {
     let args = model.args
-
+    // preparing entrop command line:
     if (!args.includes('-a ')) {
       args += ' -a ' + getHashAlg()
     }
@@ -143,21 +144,27 @@
     setTimeout(
       () => {
         let start = new Date().getTime()
+
+        // calling function registered by entrop wasm app:
         let pwd = window.Entrop_GenPassword(args)
         stopCalcProgress()
         let duration = new Date().getTime() - start
         if (pwd.startsWith('error: ')) {
           model.err = pwd
+          writeOutputs(model)
           return
         }
+
         model.warn = `duration: ${duration}ms`
         if (pwd.length < model.reqLen) {
           model.warn += ', the result is shorter than required, length = ' + pwd.length
         }
         model.pwd = pwd
         writeOutputs(model)
+        if (model.copyToClipboard) {
+          copyToClipboard(model.pwd)
+        }
       }, 100)
-
   }
 
   function writeOutputs(model) {
