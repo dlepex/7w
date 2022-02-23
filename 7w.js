@@ -1,17 +1,17 @@
 (function () {
 
   const wordsCount = 7
-  let dom
-  var calcInProgress = false
+  let _el = document.body // for the sake of code completion
+  let dom = {
+    sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
+    showBtn: _el, hashedStrSep: _el, result: _el,
+    pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el,
+    copyBtn: _el, alg: _el, charset: _el, btnPane: _el, waitPane: _el
+  }
+  let calcInProgress = false
 
   document.addEventListener('DOMContentLoaded', () => {
-    let _el = document.body // for the sake of code completion
-    dom = {
-      sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
-      showBtn: _el, hashedStrSep: _el, result: _el,
-      pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el,
-      copyBtn: _el, alg: _el, charset: _el, btnPane: _el, waitPane: _el
-    }
+
     domResolveByID(dom)
     dom.wordInputs = domAppendWords(wordsCount)
     dom.form = document.querySelector('form')
