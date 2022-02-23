@@ -15,6 +15,9 @@ purely browser-side calculation facility.**
 * It works only in sufficiently modern browsers that support WASM.
 * Mobile browsers may have some quirks but do work overall
   * Some browsers are slow (in particular for argon2), it is recommended to try some other browser if your current is slow.
+  * My tests show that on (some) Android devices Firefox has 2x faster wasm execution than Chrome.
+  * You can add 7w to your home-screen (from browser menu), and use it almost as conveniently as a typical mobile app.
+
 
 ### Security hints
 
