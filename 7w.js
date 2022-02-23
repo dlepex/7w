@@ -1,4 +1,4 @@
-(function (CryptoJS) {
+(function () {
 
   const wordsCount = 7
   let dom
@@ -9,7 +9,7 @@
       sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
       showBtn: _el, hashedStrSep: _el, result: _el,
       pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el,
-      copyBtn: _el, alg: _el, charset: _el
+      copyBtn: _el, alg: _el, charset: _el, btnPane: _el, waitPane: _el
     }
     domResolveByID(dom)
     dom.wordInputs = domAppendWords(wordsCount)
@@ -51,8 +51,9 @@
     model = model || {}
     model.err = checkValidity()
     if (!model.err) readInputs(model)
-    if (!model.err) calculate(model)
-    writeOutputs(model)
+    if (!model.err) {
+      calculate(model)
+    } else writeOutputs(model)
   }
 
   function onGenerateAndCopy() {
@@ -136,18 +137,25 @@
     }
     args += ' ' + model.words
 
-    let start = new Date().getTime()
-    let pwd = window.Entrop_GenPassword(args)
-    let duration = new Date().getTime() - start
-    if (pwd.startsWith('error: ')) {
-      model.err = pwd
-      return
-    }
-    model.warn = `duration: ${duration}ms`
-    if (pwd.length < model.reqLen) {
-      model.warn += ', the result is shorter than required, length = ' + pwd.length
-    }
-    model.pwd = pwd
+    startCalcProgress()
+    setTimeout(
+      () => {
+        let start = new Date().getTime()
+        let pwd = window.Entrop_GenPassword(args)
+        stopCalcProgress()
+        let duration = new Date().getTime() - start
+        if (pwd.startsWith('error: ')) {
+          model.err = pwd
+          return
+        }
+        model.warn = `duration: ${duration}ms`
+        if (pwd.length < model.reqLen) {
+          model.warn += ', the result is shorter than required, length = ' + pwd.length
+        }
+        model.pwd = pwd
+        writeOutputs(model)
+      }, 0)
+
   }
 
   function writeOutputs(model) {
@@ -250,9 +258,13 @@
   function hide(el) { el.classList.add('hidden') }
   function show(el) { el.classList.remove('hidden') }
 
-  function disableBtns(flag) {
-    dom.copyBtn.disabled = flag
-    dom.genBtn.disabled = flag
+  function startCalcProgress() {
+    hide(dom.btnPane)
+    show(dom.waitPane)
   }
 
-})(this.CryptoJS)
+  function stopCalcProgress() {
+    hide(dom.waitPane)
+    show(dom.btnPane)
+  }
+})()
