@@ -18,11 +18,20 @@ purely browser-side calculation facility.**
   * My tests show that on (some) Android devices Firefox has 2x faster wasm execution than Chrome.
   * You can add 7w to your home-screen (from browser menu), and use it almost as conveniently as a typical mobile app.
 
+### Extra params description
+
+Changing any extra parameter will result in getting different password.
+
+* _charset_ defines characters that a password can contain (entrop: -c)
+* _algorithm_ that is used to generate password (entrop: -a)
+* _separator_ to join words into string, that is then passed to algorithm
+* _defaults version_ defines preset of algorithm parameters such as number of iterations and salt (entrop: -d)
+
 ### UI tweaks
 
-**7w** supports URL hash params to change UI appearance.
-* _w_=number - changes number of words (default is 7)
-* mod=v - changes initial mode to visible
+**7w** supports URL hash params to change UI
+* _w_=number - changes number of word inputs (default is 7)
+* mod=v - changes initial mode to visible (default is stealth)
 
 Example:
 https://dlepex.github.io/7w/index.html#w=10&mod=v
