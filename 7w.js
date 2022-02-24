@@ -1,19 +1,26 @@
 (function () {
 
-  const wordsCount = 7
-  let _el = document.body // for the sake of code completion
-  let dom = {
-    sMode: _el, hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
-    showBtn: _el, hashedStrSep: _el, result: _el,
+  const _hashUrlParams = new URLSearchParams(window.location.hash.substring(1));
+
+  // Settings:
+  const wordsNum = _hashUrlParams.get("w") || 7
+  const modeIsVisible = _hashUrlParams.get("mod") == 'v'
+  const calcDelayMs = 100
+
+  // Globals:
+  const _el = document.body // for code completion to work only
+  const dom = {
+    sMode: _el, vMode: _el,
+    hashedPane: _el, resultPane: _el, errPane: _el, err: _el,
+    showBtn: _el, hashedStrSep: _el, result: _el, defVer: _el,
     pwdLength: _el, pwdInfo: _el, entropArgs: _el, genBtn: _el,
     copyBtn: _el, alg: _el, charset: _el, btnPane: _el, waitPane: _el
   }
   let calcInProgress = false
 
   document.addEventListener('DOMContentLoaded', () => {
-
     domResolveByID(dom)
-    dom.wordInputs = domAppendWords(wordsCount)
+    dom.wordInputs = domAppendWords(wordsNum)
     dom.form = document.querySelector('form')
 
     dom.secureInputs = dom.wordInputs.slice()  // inputs affected by mode change
@@ -25,6 +32,11 @@
     document.querySelector('#clearBtn').addEventListener('click', onClear)
     document.querySelector('#genBtn').addEventListener('click', onGenerate)
     document.querySelector('#copyBtn').addEventListener('click', onGenerateAndCopy)
+
+    if (modeIsVisible) {
+      dom.vMode.checked = true
+      onChangeMode()
+    }
   })
 
   function onClear() {
@@ -90,7 +102,7 @@
   function readInputs(model) {
     let exists
     let words = []
-    for (let i = wordsCount - 1; i >= 0; i--) {
+    for (let i = wordsNum - 1; i >= 0; i--) {
       let el = dom.wordInputs[i]
       let w = el.value.trim()
       if (el.value != w) {
@@ -119,35 +131,23 @@
     model.sep = dom.hashedStrSep.value || ' '
     model.args = dom.entropArgs.value || ''
     model.reqLen = parseInt(dom.pwdLength.value)
+    model.alg = getHashAlg()
+    model.charset = getCharset()
+    model.defVer = getDefaultsVer()
     return model
   }
 
   // Async. computation using setTimeout
   function calculate(model) {
-    let args = model.args
-    // preparing entrop command line:
-    if (!args.includes('-a ')) {
-      args += ' -a ' + getHashAlg()
-    }
-    if (!args.includes('-c ')) {
-      args += ' -c ' + getCharset()
-    }
-    if (!args.includes('-s ') && model.sep != ' ') {
-      args += ' -s ' + model.sep
-    }
-    if (!args.includes('-l ')) {
-      args += ' -l ' + model.reqLen
-    }
-    args += ' ' + model.words
-
+    let args = getEntropArgs(model)
     startCalcProgress()
     setTimeout(
       () => {
         let start = new Date().getTime()
-
         // calling function registered by entrop wasm app:
         let pwd = window.Entrop_GenPassword(args)
         stopCalcProgress()
+
         let duration = new Date().getTime() - start
         if (pwd.startsWith('error: ')) {
           model.err = pwd
@@ -161,10 +161,33 @@
         }
         model.pwd = pwd
         writeOutputs(model)
+
         if (model.copyToClipboard) {
           copyToClipboard(model.pwd)
         }
-      }, 100)
+      }, calcDelayMs)
+  }
+
+  // converts "model" to entrop cmd line args
+  function getEntropArgs(model) {
+    let args = model.args
+    if (!args.includes('-a ')) {
+      args += ' -a ' + model.alg
+    }
+    if (!args.includes('-c ')) {
+      args += ' -c ' + model.charset
+    }
+    if (!args.includes('-d ')) {
+      args += ' -d ' + model.defVer
+    }
+    if (!args.includes('-s ') && model.sep != ' ') {
+      args += ' -s ' + model.sep
+    }
+    if (!args.includes('-l ')) {
+      args += ' -l ' + model.reqLen
+    }
+    args += ' ' + model.words
+    return args
   }
 
   function writeOutputs(model) {
@@ -186,12 +209,12 @@
 
   function onChangeMode() {
     let isStealth = dom.sMode.checked
-    if (isStealth) { // s -> v
+    if (isStealth) { // v -> s
       dom.form.classList.replace('v-form', 's-form')
       changeInputType('text', 'password')
       hide(dom.hashedPane)
       show(dom.showBtn)
-    } else { // v -> s
+    } else { // s -> v
       onClear()
       dom.form.classList.replace('s-form', 'v-form')
       changeInputType('password', 'text')
@@ -211,13 +234,9 @@
     })
   }
 
-  function getHashAlg() {
-    return dom.alg.value
-  }
-
-  function getCharset() {
-    return dom.charset.value
-  }
+  function getHashAlg() { return dom.alg.value }
+  function getCharset() { return dom.charset.value }
+  function getDefaultsVer() { return dom.defVer.value }
 
   function copyToClipboard(text) {
     let textArea = document.createElement('textarea')
@@ -236,7 +255,6 @@
 
 
   function domAppendWords(num) {
-    num = num || 7
     let wc = document.getElementById('wordsPane')
     let blueprint = wc.childNodes[1]
     let list = [blueprint.getElementsByTagName('input')[0]]

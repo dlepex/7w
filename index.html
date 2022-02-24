@@ -76,29 +76,35 @@
     <fieldset>
       <legend>Extra Params</legend>
       <div class="ib">
-        <label class="label" for="sep">separator</label>
-        <input type="text" id="hashedStrSep">
-        <label class="label" for="alg">algorithm</label>
-        <select name="alg" id="alg">
-          <option value="pbs5">pbkdf2-sha512</option>
-          <option value="pbs2">pbkdf2-sha256</option>
-          <option value="ar">argon2</option>
-          <option value="rh">rephash</option>
-          <option value="old">old</option>
-          <option value="old2">old-sha256</option>
-          <option value="old5">old-sha512</option>
-        </select>
-        <label class="label" for="charset">charset</label>
-        <select name="charset" id="charset">
-          <option value="alnum">alphanumeric</option>
-          <option value="pasc">print.ascii</option>
-          <option value="num">digits</option>
-          <option value="al">letters</option>
-          <option value="lower">lower</option>
-          <option value="upper">upper</option>
-          <option value="hex">hex</option>
-          <option value="bin">bin</option>
-        </select>
+        <p>
+          <label class="label" for="charset">charset</label>
+          <select name="charset" id="charset">
+            <option value="alnum">alphanumeric</option>
+            <option value="pasc">print.ascii</option>
+            <option value="num">digits</option>
+            <option value="al">letters</option>
+            <option value="lower">lower</option>
+            <option value="upper">upper</option>
+            <option value="hex">hex</option>
+            <option value="bin">bin</option>
+          </select>
+          <label class="label" for="sep">separator</label>
+          <input type="text" id="hashedStrSep">
+        </p>
+        <p>
+          <label class="label" for="alg">algorithm</label>
+          <select name="alg" id="alg">
+            <option value="pbs5">pbkdf2-sha512</option>
+            <option value="pbs2">pbkdf2-sha256</option>
+            <option value="ar">argon2</option>
+            <option value="rh">rephash</option>
+            <option value="old">old</option>
+            <option value="old2">old-sha256</option>
+            <option value="old5">old-sha512</option>
+          </select>
+          <label class="label" for="defVer">def. version</label>
+          <input type="number" id="defVer" value="0" min="0" max="4">
+        </p>
         <div id="entrop_pane">
           <label class="label" for="entropArgs">cmdline</label><input type="text" id="entropArgs">
         </div>

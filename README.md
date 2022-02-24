@@ -18,6 +18,14 @@ purely browser-side calculation facility.**
   * My tests show that on (some) Android devices Firefox has 2x faster wasm execution than Chrome.
   * You can add 7w to your home-screen (from browser menu), and use it almost as conveniently as a typical mobile app.
 
+### UI tweaks
+
+**7w** supports URL hash params to change UI appearance.
+* _w_=number - changes number of words (default is 7)
+* mod=v - changes initial mode to visible
+
+Example:
+https://dlepex.github.io/7w/index.html#w=10&mod=v
 
 ### Security hints
 
