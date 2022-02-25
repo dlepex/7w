@@ -57,11 +57,11 @@
   }
 
   function onGenerate() {
-    if (calcInProgress) return
     doGenerate()
   }
 
   function doGenerate(model) {
+    if (calcInProgress) return
     model = model || {}
     model.err = checkValidity()
     if (!model.err) readInputs(model)
@@ -131,9 +131,9 @@
     model.sep = dom.hashedStrSep.value || ' '
     model.args = dom.entropArgs.value || ''
     model.reqLen = parseInt(dom.pwdLength.value)
-    model.alg = getHashAlg()
-    model.charset = getCharset()
-    model.defVer = getDefaultsVer()
+    model.alg = dom.alg.value
+    model.charset = dom.charset.value
+    model.defVer = dom.defVer.value
     return model
   }
 
@@ -175,13 +175,13 @@
       args += ' -a ' + model.alg
     }
     if (!args.includes('-c ')) {
-      args += ' -c ' + model.charset
+      args += ' -c "' + model.charset + '"'
     }
     if (!args.includes('-d ')) {
       args += ' -d ' + model.defVer
     }
     if (!args.includes('-s ') && model.sep != ' ') {
-      args += ' -s ' + model.sep
+      args += ' -s "' + model.sep + '"'
     }
     if (!args.includes('-l ')) {
       args += ' -l ' + model.reqLen
@@ -233,10 +233,6 @@
       }
     })
   }
-
-  function getHashAlg() { return dom.alg.value }
-  function getCharset() { return dom.charset.value }
-  function getDefaultsVer() { return dom.defVer.value }
 
   function copyToClipboard(text) {
     let textArea = document.createElement('textarea')
