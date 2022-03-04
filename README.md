@@ -2,10 +2,10 @@
 
 https://dlepex.github.io/7w
 
-*7 words* is the password generator. It converts a mnemonic sequence of words into an
+**7w** is the *deterministic* password generator. It converts a mnemonic sequence of words into an
 unreadable  & unguessable password.
 *7w* doesn't store or send your data to third party. **It is
-purely browser-side calculation facility.**
+purely browser-side "password calculator".**
 
 ### Implementation notes
 
@@ -17,6 +17,7 @@ purely browser-side calculation facility.**
   * Some browsers are slow (in particular for argon2), it is recommended to try some other browser if your current is slow.
   * My tests show that on (some) Android devices Firefox has 2x faster wasm execution than Chrome.
   * You can add 7w to your home-screen (from browser menu), and use it almost as conveniently as a typical mobile app.
+  * **Disable energy saving mode on mobile device when calculating password** (it slows CPU)
 
 ### Extra params description
 
